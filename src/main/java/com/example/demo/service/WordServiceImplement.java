@@ -21,7 +21,7 @@ public class WordServiceImplement implements WordService {
     private final WordRepository wordRepository;
 
     @Override
-    public List<WordDto> findWord(String wordRequest) {
+    public List<WordDto> findWord(String wordRequest) throws WordNotFoundException, EmptyWordException {
         if (wordRequest.isEmpty()) {
             throw new EmptyWordException("Vasea esti dalbaiob !!!!!!!!!!!!");
         }
