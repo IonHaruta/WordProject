@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.exceptions.EmptyWordException;
 import com.example.demo.exceptions.WordNotFoundException;
 import com.example.demo.repo.WordRepository;
+import com.example.demo.web.dto.CreateWordRequest;
 import com.example.demo.web.dto.WordDto;
 import com.example.demo.web.entity.Word;
 import lombok.AllArgsConstructor;
@@ -20,7 +21,7 @@ public class WordServiceImplement implements WordService {
     private final WordRepository wordRepository;
 
     @Override
-    public List<WordDto> findWord(String wordRequest) {
+    public List<WordDto> findWord(String wordRequest) throws WordNotFoundException, EmptyWordException {
         if (wordRequest.isEmpty()) {
             throw new EmptyWordException("Vasea esti dalbaiob !!!!!!!!!!!!");
         }
@@ -35,6 +36,16 @@ public class WordServiceImplement implements WordService {
             resultList.add(from(word));
         }
 
+
+
         return resultList;
+    }
+
+    @Override
+    public WordDto createWord(CreateWordRequest createWordRequest) {
+        Word word = Word.builder().word(createWordRequest.getWord()).definition(createWordRequest.getDefinition()).build();
+        Word save = wordRepository.save(word);
+
+        return from(save);
     }
 }
